@@ -12,7 +12,7 @@ router.post('/create', controller.criar);
 router.post('/login', controller.login);
 
 router.put('/update', auth, controller.atualizar);
-router.put('/update/icon', upload.single("icon"), controller.updateIcon)
+router.put('/update/icon', auth, upload.single("icon"), controller.updateIcon)
 
 router.delete('/delete', auth, controller.deletar);
 
