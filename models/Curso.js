@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database')
+const sequelize = require('../config/database');
 
 const Curso = sequelize.define('Curso', {
     id: {
@@ -40,9 +40,11 @@ const Curso = sequelize.define('Curso', {
     area: {
         type: DataTypes.STRING(50),
         allowNull: false
+    },
+    professorId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
-    
-    // REFERENCIAR CHAVE ESTRANGEIRA Professor AQUI
 
     // foto: {...},
     // icon: {...}

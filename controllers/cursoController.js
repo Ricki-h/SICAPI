@@ -1,14 +1,19 @@
 const Curso = require('../models/Curso');
+const Professor = require('../models/Professor');
 
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+// const bcrypt = require('bcryptjs');
+// const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = 'xghosts-goats';
 
 module.exports = {
     async listar(req, res) {
-        const cursos = await Curso.findAll();
-        res.json(cursos);
+        try {
+            const cursos = await Curso.findAll();
+            res.json(cursos);
+        } catch (error) {
+            res.status(500).json({ erro: error.message });
+        }   
     },
     async listarUm(req, res) {
         const { id } = req.params;
@@ -16,10 +21,10 @@ module.exports = {
         if(!curso) return res.status(404).json({ erro: 'Usuário não encontrado' });
         res.json(curso);
     },
-    async me(req, res) {
-        const curso = await Curso.findByPk(req.params.id);
-        res.json(curso);
-    },
+    // async me(req, res) {
+    //     const curso = await Curso.findByPk(req.params.id);
+    //     res.json(curso);
+    // },
     async criar(req, res) {
         try {
             const { ...dados } = req.body;
@@ -37,12 +42,7 @@ module.exports = {
             const curso = await Curso.findByPk(req.params.id);
             if(!curso) return res.status(404).json({ erro: 'Curso não encontrado' });
 
-            let dados = req.body;
-            if(dados.senha) {
-                dados.senha = await bcrypt.hash(dados.senha, 10)
-            };     
-
-            await curso.update(dados);
+            await curso.update(req.body);
             res.json(curso);
 
         } catch(error) {
