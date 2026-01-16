@@ -2,8 +2,6 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = 'xghosts-goats';
 
 module.exports = function(req, res, next) {
-    console.log("TOKEN:", req.headers.authorization);
-    console.log("USER:", req.user);
     const authHeader = req.headers.authorization;
     
     if (!authHeader)
