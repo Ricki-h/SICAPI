@@ -12,8 +12,8 @@ const Ong = sequelize.define('Ong', {
         primaryKey: true
     },
     recursos: {
-        type: DataTypes.STRING(100)
-        // RECURSOS PODE SER NULO, AINDA QUE NO CÓDIGO SQL SEJA OBRIGATÓRIO
+        type: DataTypes.STRING(100),
+        allowNull: false
     }
     }
 );

@@ -1,8 +1,4 @@
 const Ong = require('../models/Ong');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-
-const JWT_SECRET = 'xghosts-goats';
 
 module.exports = {
     async listar(req, res) {
@@ -15,38 +11,34 @@ module.exports = {
         if(!ong) return res.status(404).json({ erro: 'ONG não encontrada' });
         res.json(ong);
     },
-    async me(req, res) {
-        const ong = await Ong.findByPk(req.user.id);
-        res.json(ong);
+    async criar(req, res) {
+        try {
+            const { ...dados } = req.body;
+            const novaOng = await Ong.create({
+                ...dados
+            });
+            res.json(novaOng);
+        } catch(error) {
+            res.status(400).json({ erro: error.message });
+        }
     },
+    async atualizar(req, res) {
+        try {
+            const ong = await Ong.findByPk(req.params.id);
+            if(!ong) return res.status(404).json({ erro: 'ONG não encontrada' });
 
-    // ADICIONAR ESSE MÉTODO APÓS DECIDIR A MANEIRA COMO ONG VAI LOGAR
-    // async criar(req, res) {
-    //     try {
-    //         const { senha, ...dados } = req.body;
-    //         const senhaHash = await bcrypt.hash(senha, 10);
-
-    //         const novaOng = await Ong.create({
-    //             ...dados,
-    //             senha: senhaHash
-    //         });
-
-    //         res.json(novaOng);
-    //     }
-    //     catch(error) {
-    //         res.status(400).json({ erro: error.message });
-    //     }
-    // },
-
-    // ADICIONAR "async atualizar(...)" AQUI
-    
+            await ong.update(req.body);
+            res.json(ong);
+        } catch (error) {
+            res.status(400).json({ erro: error.message });
+        }
+    },
     async deletar(req, res) {
-        const ong = await Ong.findByPk(req.user.id);
+        const ong = await Ong.findByPk(req.params.id);
         if (!ong) return res.status(404).json({ erro: "ONG não encontrada" });
 
         await ong.destroy();
         res.json({ mensagem: "ONG removida" });
     }
 
-    // ADICIONAR "async login(...)" AQUI
 };
