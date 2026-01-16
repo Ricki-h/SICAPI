@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const TipoEmprego = sequelize.define('TipoEmprego', {
+const EmpregoCategoria = sequelize.define('EmpregoCategoria', {
     ID: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -11,8 +11,9 @@ const TipoEmprego = sequelize.define('TipoEmprego', {
         type: DataTypes.STRING,
         allowNull: false
     }
-    
-
+}, {
+    tableName: 'EmpregoCategorias' // Recomendo usar o plural aqui para bater com a FK do outro modelo
 });
 
-module.exports = TipoEmprego;
+
+module.exports = EmpregoCategoria;
