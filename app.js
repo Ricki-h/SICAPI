@@ -17,8 +17,9 @@ app.use((err, req, res, next) => {
 
 app.use('/cursos', require('./routes/cursoRoutes'));
 app.use('/professores', require('./routes/professorRoutes'));
+app.use('/usuarios', require('./routes/usuarioRoutes'));
 
-require('./models/Associations');
+require('./models/associations');
 
 sequelize.sync();
 
