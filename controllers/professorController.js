@@ -1,12 +1,6 @@
 const Professor = require('../models/Professor');
 const Curso = require('../models/Curso');
 
-// NÃO É ÚTIL, POIS NÃO TEM LOGIN
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-
-const JWT_SECRET = 'xghosts-goats';
-
 module.exports = {
     async listar(req, res) {
         const professores = await Professor.findAll();
@@ -20,13 +14,6 @@ module.exports = {
         if(!professor) return res.status(404).json({ erro: 'Professor não encontrado' });
         res.json(professor);
     },
-
-    // O MÉTODO ABAIXO NÃO É ÚTIL, POIS NÃO TEM AUTENTICAÇÃO
-    // async me(req, res) {
-    //     const professor = await Professor.findByPk(req.params.id);
-    //     res.json(professor);
-    // },
-
     async criar(req, res) {
         try {
             const { ...dados } = req.body;

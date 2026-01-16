@@ -1,11 +1,6 @@
 const Curso = require('../models/Curso');
 const Professor = require('../models/Professor');
 
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-
-const JWT_SECRET = 'xghosts-goats';
-
 module.exports = {
     async listar(req, res) {
         try {
@@ -21,10 +16,6 @@ module.exports = {
         if(!curso) return res.status(404).json({ erro: 'Usuário não encontrado' });
         res.json(curso);
     },
-    // async me(req, res) {
-    //     const curso = await Curso.findByPk(req.params.id);
-    //     res.json(curso);
-    // },
     async criar(req, res) {
         try {
             const { ...dados } = req.body;
@@ -49,7 +40,6 @@ module.exports = {
             res.status(400).json({ erro: error.message });
         }
     },
-
     async deletar(req, res) {
         const curso = await Curso.findByPk(req.params.id);
         if (!curso) return res.status(404).json({ erro: "Curso não encontrado" });

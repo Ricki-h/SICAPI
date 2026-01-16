@@ -7,8 +7,6 @@ const upload = require('../middlewares/upload');
 router.get('/all', controller.listar);
 router.get('/:id', controller.listarUm);
 
-// router.get('/me', controller.me)
-
 router.post('/create', controller.criar);
 
 router.put('/update/:id', controller.atualizar);

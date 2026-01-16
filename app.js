@@ -15,7 +15,6 @@ app.use((err, req, res, next) => {
   next();
 });
 
-app.use('/usuarios', require('./routes/usuarioRoutes'));
 app.use('/cursos', require('./routes/cursoRoutes'));
 app.use('/professores', require('./routes/professorRoutes'));
 

@@ -5,7 +5,7 @@ const auth = require('../middlewares/auth');
 const upload = require('../middlewares/upload');
 
 router.get('/all', controller.listar);
-// router.get('/me', controller.me)
+
 router.get('/:id', controller.listarUm);
 
 router.post('/create', controller.criar);
