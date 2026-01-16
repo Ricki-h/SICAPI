@@ -47,6 +47,11 @@ const Usuario = sequelize.define('Usuario', {
     icon: {
         type: DataTypes.STRING(2000),
         defaultValue: 'https://res.cloudinary.com/dx8qry3lr/image/upload/v1768334682/user-default-icon_vdyyeo.png'
+    },
+    tipo: {
+        type: DataTypes.ENUM('CLIENTE', 'ADMIN', 'VENDEDOR'),
+        allowNull: false,
+        defaultValue: 'CLIENTE',
     }
 });
 
