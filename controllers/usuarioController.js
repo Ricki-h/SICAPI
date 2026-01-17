@@ -3,9 +3,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { UsuarioComum } = require('../models/associations');
 const { UsuarioCadArca } = require('../models/associations');
-const { UsuarioAdm } = require('../models/associations')
+const { UsuarioAdm } = require('../models/associations');
+require('dotenv').config();
 
-const JWT_SECRET = 'xghosts-goats';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 module.exports = {
     async listar(req, res) {

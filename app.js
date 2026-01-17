@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 const sequelize = require('./config/database');
+const multer = require('multer');
+
+require('./models/associations');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -15,7 +18,7 @@ app.use((err, req, res, next) => {
   next();
 });
 app.use('/usuarios', require('./routes/usuarioRoutes'));
-
+app.use('/auxilios', require('./routes/auxilioRoutes'));
 
 sequelize.sync();
 
