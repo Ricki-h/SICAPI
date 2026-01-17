@@ -40,10 +40,6 @@ const Curso = sequelize.define('Curso', {
     area: {
         type: DataTypes.STRING(50),
         allowNull: false
-    },
-    professorId: {
-        type: DataTypes.INTEGER,
-        allowNull: false
     }
 
     // foto: {...},

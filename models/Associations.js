@@ -4,15 +4,15 @@ const Usuario = require('./Usuario');
 const UsuarioComum = require('./UsuarioComum');
 const UsuarioCadArca = require('./UsuarioCadArca');
 const UsuarioAdm = require('./UsuarioAdm');
+const UsuarioCurso = require('./UsuarioCurso');
 
 // PROFESSOR E CURSO
-
-Professor.hasMany(Curso, {
-    foreignKey: 'professorId'
+Curso.hasMany(Professor, {
+    foreignKey: 'cursoId'
 });
 
-Curso.belongsTo(Professor, {
-    foreignKey: 'professorId'
+Professor.belongsTo(Curso, {
+    foreignKey: 'cursoId'
 });
 
 // USUÁRIO
@@ -28,14 +28,20 @@ UsuarioAdm.belongsTo(Usuario, { foreignKey: 'id' });
 
 // USUÁRIO E CURSO
 Usuario.belongsToMany(Curso, {
-    through: 'UsuarioCurso',
-    as: 'cursos',
+    through: UsuarioCurso,
     foreignKey: 'usuario_id'
 });
 
 Curso.belongsToMany(Usuario, {
-    through: 'UsuarioCurso', // CRIA TABELA UsuarioCurso
-    as: 'usuarios',
+    through: UsuarioCurso, 
+    foreignKey: 'curso_id'
+});
+
+Curso.hasMany(UsuarioCurso, {
+    foreignKey: 'curso_id'
+});
+
+UsuarioCurso.belongsTo(Curso, {
     foreignKey: 'curso_id'
 });
 
@@ -45,5 +51,6 @@ module.exports = {
     Usuario,
     UsuarioComum,
     UsuarioCadArca,
-    UsuarioAdm
+    UsuarioAdm, 
+    UsuarioCurso
 };

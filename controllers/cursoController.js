@@ -1,5 +1,4 @@
-const Curso = require('../models/Curso');
-const Professor = require('../models/Professor');
+const { Curso, Professor} = require('../models/associations');
 
 module.exports = {
     async listar(req, res) {
@@ -12,8 +11,10 @@ module.exports = {
     },
     async listarUm(req, res) {
         const { id } = req.params;
-        const curso = await Curso.findByPk(id);
-        if(!curso) return res.status(404).json({ erro: 'Usuário não encontrado' });
+        const curso = await Curso.findByPk(id, {
+            include: [{ model: Professor }]
+        });
+        if(!curso) return res.status(404).json({ erro: 'Curso não encontrado' });
         res.json(curso);
     },
     async criar(req, res) {

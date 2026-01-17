@@ -16,7 +16,11 @@ const Professor = sequelize.define('Professor', {
         allowNull: false
     }, 
     descricao: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    cursoId: {
+        type: DataTypes.INTEGER,
         allowNull: false
     }
 
