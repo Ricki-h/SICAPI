@@ -1,4 +1,4 @@
-const Ong = require('../models/Ong');
+const { Abrigo, Ong } = require('../models/associations')
 
 module.exports = {
     async listar(req, res) {
@@ -7,7 +7,11 @@ module.exports = {
     },
     async listarUm(req, res) {
         const { id } = req.params;
-        const ong = await Ong.findByPk(id);
+        const ong = await Ong.findByPk(id, {         
+            include: [
+                { model: Abrigo },
+            ]
+        });
         if(!ong) return res.status(404).json({ erro: 'ONG não encontrada' });
         res.json(ong);
     },

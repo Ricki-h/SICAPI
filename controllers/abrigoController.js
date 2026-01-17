@@ -1,4 +1,4 @@
-const Abrigo = require('../models/Abrigo');
+const { Abrigo, Ong } = require('../models/associations')
 
 module.exports = {
     async listar(req, res) {
@@ -7,7 +7,11 @@ module.exports = {
     },
     async listarUm(req, res) {
         const { id } = req.params;
-        const abrigo = await Abrigo.findByPk(id);
+        const abrigo = await Abrigo.findByPk(id, {
+            include: [
+                { model: Ong },
+            ]
+        });
         if (!abrigo) return res.status(404).json({ erro: 'Abrigo não encontrado' });
         res.json(abrigo);
     },
