@@ -16,6 +16,7 @@ app.use((err, req, res, next) => {
 });
 app.use('/usuarios', require('./routes/usuarioRoutes'));
 app.use('/ongs', require('./routes/ongRoutes'));
+app.use('/abrigos', require('./routes/abrigoRoutes'));
 
 sequelize.sync();
 
