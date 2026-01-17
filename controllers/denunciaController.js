@@ -1,5 +1,4 @@
-const Denuncia = require('../models/Denuncia');
-const UsuarioAdm = require('../models/UsuarioAdm');
+const { Denuncia, Usuario, UsuarioAdm} = require('../models/associations');
 
 module.exports = {
     async listar(req, res) {

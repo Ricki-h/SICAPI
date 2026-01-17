@@ -20,14 +20,14 @@ UsuarioAdm.belongsTo(Usuario, { foreignKey: 'id' });
 Usuario.hasMany(Denuncia, { 
     foreignKey: 'user_id', as: 'denunciasCriadas', onDelete: 'CASCADE' 
 });
-Denuncia.belongsTo(Denuncia, { 
+Denuncia.belongsTo(Usuario, { 
     foreignKey: 'user_id', as: 'autor' 
 });
 
 UsuarioAdm.hasMany(Denuncia, { 
     foreignKey: 'admin_id', as: 'denunciasGerenciadas', onDelete: 'CASCADE' 
 });
-Denuncia.belongsTo(Denuncia, { 
+Denuncia.belongsTo(UsuarioAdm, { 
     foreignKey: 'admin_id', as: 'adminResponsavel' 
 });
 
