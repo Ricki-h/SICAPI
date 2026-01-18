@@ -44,6 +44,33 @@ module.exports = {
 
         await denuncia.destroy();
         res.json({ mensagem: "Denúncia removida" });
+    },
+    async minhasDenuncias(req, res) {
+        try {
+            const denuncias = await Denuncia.findAll({
+                where: { user_id: req.user.id },
+                include: [
+                    { model: UsuarioAdm, as: 'adminResponsavel' }
+                ]
+            });
+
+            res.json(denuncias);
+        } catch (error) {
+            res.status(500).json({ erro: error.message })
+        }
+    },
+    async denunciasGerenciadas (req, res) {
+        try {
+            const denuncias = await Denuncia.findAll({
+                where: { admin_id: req.user.id },
+                include: [
+                    { model: Usuario, as: 'autor' },
+                ]
+            });
+            res.json(denuncias);
+        } catch (error) {
+            res.status(500).json({ erro: error.message })
+        }
     }
 
 };
