@@ -7,6 +7,7 @@ const inscricaoController = require('../controllers/usuarioCursoController')
 
 router.get('/all', controller.listar);
 router.get('/meuscursos', auth, inscricaoController.meusCursos);
+router.get('/:id/inscritos/', inscricaoController.quantInscritos);
 router.get('/:id', controller.listarUm);
 
 router.post('/create', controller.criar);

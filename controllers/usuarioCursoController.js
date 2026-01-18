@@ -29,3 +29,26 @@ exports.meusCursos = async (req, res) => {
         return res.status(500).json({ erro: error.message })
     }
 }
+
+exports.quantInscritos = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const curso = await Curso.findByPk(id);
+
+        if (!curso) { 
+            return res.status(404).json('Curso não encontrado')
+        }
+
+        const total = await UsuarioCurso.count({
+            where: { curso_id: id}
+        });
+
+        res.json({
+            cursoId: id,
+            titulo: curso.titulo,
+            inscritos: total
+        })
+    } catch (error) {
+        res.status(500).json({ erro: error.message })
+    }
+}
