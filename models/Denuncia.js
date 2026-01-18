@@ -13,7 +13,6 @@ const Denuncia = sequelize.define('Denuncia', {
     },
     data: {
         type: DataTypes.DATE,
-        allowNull: false,
         defaultValue: DataTypes.NOW
     },
     local: {
