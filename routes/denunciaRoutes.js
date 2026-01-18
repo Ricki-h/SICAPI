@@ -14,6 +14,7 @@ router.get('/:id', controller.listarUm);
 router.post('/create', auth, controller.criar);
 
 router.put('/update/:id', auth, controller.atualizar);
+router.put('/:id/assumir', auth, isAdmin, controller.atualizar);
 
 router.delete('/delete/:id', auth, controller.deletar);
 

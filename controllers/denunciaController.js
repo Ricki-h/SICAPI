@@ -18,9 +18,14 @@ module.exports = {
     },
     async criar(req, res) {
         try {
-            const { ...dados } = req.body;
+            const { titulo, local, descricao, tipo } = req.body;
             const novaDenuncia = await Denuncia.create({
-                ...dados
+                titulo,
+                local,
+                descricao,
+                tipo,
+                status: 'Pendente',
+                user_id: req.user.id
             });
             res.json(novaDenuncia);
         } catch(error) {
@@ -71,6 +76,19 @@ module.exports = {
         } catch (error) {
             res.status(500).json({ erro: error.message })
         }
+    },
+    async assumir(req, res) {
+        const denuncia = await Denuncia.findByPk(req.params.id);
+
+        if (!denuncia) return res.status(404).json({ erro: 'Denúncia não encontrada' });
+        if (denuncia.admin_id) return res.status(400).json({ erro: 'Denúncia já possui Administrador' });
+        
+        await denuncia.update({
+            admin_id: req.user.id,
+            status: 'Em análise'
+        });
+
+        res.json(denuncia);
     }
 
 };
