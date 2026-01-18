@@ -1,4 +1,4 @@
-const EmpregoOportunidade = require('../models/EmpregoOportunidade');
+const EmpregoOportunidade = require('../models/EmpregoOportunidade.js');
 
 module.exports = {
     async listar(req, res) {

@@ -10,6 +10,8 @@ const EmpregoCategoria = require('./models/EmpregoCategoria');
 
 const EmpregoInscricao = require('./models/EmpregoInscricao');
 
+const Post_blog = require('./models/Post_blog')
+
 
 const EmpregoOportunidade = require('./models/')
 app.use(express.json());
@@ -27,7 +29,11 @@ app.use('/empregooportunidade', require('./routes/EmpregoOportunidadeRoutes'));
 
 app.use('/inscricao', require('./routes/EmpregoInscricaoRoutes'))
 
+app.use('/blog', require('./routes/Post_blogRoutes'))
 
+
+// Mude para true apenas para o servidor reiniciar e criar a tabela
+sequelize.sync({ force: true }) 
 
 
 module.exports = app;

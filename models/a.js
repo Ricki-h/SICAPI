@@ -3,7 +3,7 @@ const tipoEmprego = require('./tipoEmprego');
 const EmpreegoCategoria = require('./EmpregoCategoria');
 const InscricaoEmprego = require('./EmpregoInscricao'); 
 
-// Associações um-para-muitos (tipoEmprego e EmpreegoCategoria têm muitos EmpregoOportunidade)
+
 tipoEmprego.hasMany(EmpregoOportunidade, {
     foreignKey: 'Tipoid'
 });
@@ -12,7 +12,7 @@ EmpreegoCategoria.hasMany(EmpregoOportunidade, {
     foreignKey: 'Categoriaid'
 });
 
-// Associações belongsTo na tabela filha (EmpregoOportunidade pertence a um tipo e uma categoria)
+
 EmpregoOportunidade.belongsTo(tipoEmprego, {
     foreignKey: 'Tipoid'
 });
@@ -26,6 +26,10 @@ const Usuario = require('./Usuario');
 const UsuarioComum = require('./UsuarioComum');
 const UsuarioCadArca = require('./UsuarioCadArca');
 const UsuarioAdm = require('./UsuarioAdm');
+const PostBlog = require('./Post_blog');
+
+UsuarioAdm.hasMany(PostBlog, { foreignKey: 'ID_Admin' });
+PostBlog.belongsTo(UsuarioAdm, { foreignKey: 'ID_Admin' });
 
 Usuario.hasOne(UsuarioComum, { foreignKey: 'id', onDelete: 'CASCADE' });
 UsuarioComum.belongsTo(Usuario, { foreignKey: 'id' });
@@ -51,5 +55,6 @@ module.exports = {
     EmpreegoCategoria, 
     EmpregoOportunidade,
     tipoEmprego,
-    InscricaoEmprego
+    InscricaoEmprego,
+    PostBlog
 };
