@@ -18,7 +18,8 @@ module.exports = {
         try {
             const { ...dados } = req.body;
             const novoProfessor = await Professor.create({
-                ...dados
+                ...dados,
+                icon: req.file.path
             });
 
             res.json(novoProfessor);
@@ -44,8 +45,20 @@ module.exports = {
 
         await professor.destroy();
         res.json({ mensagem: "Professor removido" });
-    }
+    },
     
-    // UPDATE ICON
+    async updateIcon(req, res) {
+        try {
+            const professor = await Professor.findByPk(req.params.id);
+            if(!professor) return res.status(404).json({ erro: 'Professor não encontrado' });
+
+            professor.icon = req.file.path;
+            await professor.save()
+
+            res.json(professor)
+        } catch(error) {
+            res.status(500).json({ erro: error.message });
+        }
+    }
 
 };

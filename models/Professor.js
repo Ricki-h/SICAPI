@@ -22,9 +22,12 @@ const Professor = sequelize.define('Professor', {
     cursoId: {
         type: DataTypes.INTEGER,
         allowNull: false
-    }
+    },
 
-    // icon: {...}
+    icon: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
 
     }
 );
