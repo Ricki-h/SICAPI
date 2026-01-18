@@ -54,11 +54,63 @@ SolicitacaoAuxilio.belongsTo(Usuario, {
     as: 'adminResponsavel'
 })
 
+
+// ----------------------------------------------------------------------
+
+
+// Serviço
+const CategoriaServico = require('./CategoriaServiço');
+const Servico = require('./Servico');
+const AgendamentoServico = require('./AgendamentoServico');
+
+CategoriaServico.hasMany(Servico, {
+    foreignKey: 'categoria'
+});
+Servico.belongsTo(CategoriaServico, {
+    foreignKey: 'categoria'
+});
+
+Servico.belongsToMany(Usuario, {
+    through: AgendamentoServico,
+    foreignKey: 'servico_id'
+});
+Usuario.belongsToMany(Servico, {
+    through: AgendamentoServico,
+    foreignKey: 'usuario_id'
+});
+
+Servico.hasMany(AgendamentoServico, {
+    foreignKey: 'servico_id'
+});
+AgendamentoServico.belongsTo(Servico, {
+    foreignKey: 'servico_id'
+});
+
+Usuario.hasMany(AgendamentoServico, {
+    foreignKey: 'usuario_id'
+})
+AgendamentoServico.belongsTo(Usuario, {
+    foreignKey: 'usuario_id'
+})
+
+Usuario.hasMany(AgendamentoServico, {
+    foreignKey: 'admin_id',
+    as: 'agendamentosGerenciados'
+})
+AgendamentoServico.belongsTo(Usuario, {
+    foreignKey: 'admin_id',
+    as: 'adminResponsavel'
+})
+
+
 module.exports = {
     Usuario,
     UsuarioComum,
     UsuarioCadArca,
     UsuarioAdm,
     Auxilio,
-    SolicitacaoAuxilio
+    SolicitacaoAuxilio,
+    Servico,
+    CategoriaServico,
+    AgendamentoServico
 };

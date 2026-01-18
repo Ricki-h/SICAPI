@@ -161,9 +161,6 @@ module.exports = {
         res.json({ mensagem: "Usuário removido" });
     },
     async updateIcon(req, res) {
-        console.log("Chegou no updateIcon!");
-        console.log("File recebido:", req.file);
-        console.log("Body:", req.body);
         try {
             const usuario = await Usuario.findByPk(req.user.id);
             if (!usuario) return res.status(404).json({ erro: "Usuário não encontrado" });

@@ -98,4 +98,16 @@ exports.meuAuxilio = async (req, res) => {
     });
 
     res.json(solicitacoes);
- }
+ };
+
+  exports.minhaGerencia = async (req, res) => {
+    const admin_id = req.user.id;
+    const { id } = req.params;
+
+    const solicitacao = await SolicitacaoAuxilio.findAll({
+        where: { admin_id: admin_id, id: id },
+        include: [Usuario, Auxilio]
+    });
+
+    res.json(solicitacao);
+ };

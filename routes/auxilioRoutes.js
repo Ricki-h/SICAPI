@@ -10,6 +10,7 @@ router.get('/all', controller.listar);
 router.get('/:id', controller.listarUm);
 router.get('/solicitacoes/meus',auth, solController.meusAuxilios);
 router.get('/solicitacoes/gerencias', auth, isAdmin, nivelMinimo(2), solController.minhasGerencias);
+router.get('/solicitacoes/gerencias/:id', auth, isAdmin, nivelMinimo(2), solController.minhaGerencia);
 router.get('/solicitacoes/:id', auth, solController.meuAuxilio);
 
 router.post('/criar', auth, isAdmin, nivelMinimo(3), controller.criar);

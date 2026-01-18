@@ -1,4 +1,3 @@
-const { json } = require('sequelize');
 const Auxilio = require('../models/Auxilio');
 
 module.exports = {
