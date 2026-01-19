@@ -1,5 +1,6 @@
 const { PostBlog, UsuarioAdm } = require('../models/a'); 
 
+
 module.exports = {
     
     async listar(req, res) {
