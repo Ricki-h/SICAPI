@@ -69,6 +69,11 @@ const EmpregoOportunidade = sequelize.define('EmpregoOportunidade', {
         type: DataTypes.STRING,
         allowNull: true
     },
+    Icone: {
+        type: DataTypes.STRING(2000),
+        allowNull: false
+
+    },
     Categoriaid: { 
         type: DataTypes.INTEGER, 
         allowNull: true,

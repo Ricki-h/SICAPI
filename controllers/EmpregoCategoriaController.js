@@ -41,6 +41,15 @@ module.exports = {
 
         await curso.destroy();
         res.json({ mensagem: "tipo removido" });
+    },
+    async atualizar_icon(req, res) {
+        const {id} = req.params;
+        const icone = req.file.path
+        const categoria = await EmpregoOportunidade.findByPk(id)
+        categoria.icone = icone
+        await oportunidade.save()
+        res.json(categoria)
     }
+
 
 }

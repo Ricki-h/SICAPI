@@ -8,7 +8,8 @@ module.exports = {
             const posts = await PostBlog.findAll({
                 include: [
                     { 
-                        model: UsuarioAdm, 
+                        model: UsuarioAdm,
+                        as: 'autor',
                         attributes: ['id', 'nivel'] 
                     }
                 ],
@@ -41,11 +42,13 @@ module.exports = {
     
     async criar(req, res) {
         try {
-            const {  Titulo, Imagens, Descricao } = req.body;
+            const {  ...dados } = req.body;
+            const ID_Admin = req.user.id;
             
             
             const novoPost = await PostBlog.create({
-                Titulo, Imagens, Descricao, user_id: req.user.id
+                ...dados,
+                ID_Admin
             });
             
             res.status(201).json(novoPost);

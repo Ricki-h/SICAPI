@@ -15,7 +15,8 @@ module.exports = {
         try {
             const {...dados} = req.body;
             const novoTipo = await TipoEmprego.create({
-                ...dados
+                ...dados,
+                Icone: req.file.path
             });
             res.json(novoTipo);
         } catch(error) {
@@ -41,6 +42,14 @@ module.exports = {
 
         await curso.destroy();
         res.json({ mensagem: "tipo removido" });
+    },
+    async atualizar_icon(req, res) {
+        const {id} = req.params;
+        const icone = req.file.path
+        const tipo = await EmpregoOportunidade.findByPk(id)
+        tipo.icone = icone
+        await oportunidade.save()
+        res.json(tipo)
     }
 
 }

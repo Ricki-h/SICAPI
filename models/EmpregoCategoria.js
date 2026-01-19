@@ -10,9 +10,14 @@ const EmpregoCategoria = sequelize.define('EmpregoCategoria', {
     Nome: {
         type: DataTypes.STRING,
         allowNull: false
+    }, 
+    Icone: {
+        type: DataTypes.STRING(2000),
+        allowNull: false
+
     }
 }, {
-    tableName: 'EmpregoCategorias' // Recomendo usar o plural aqui para bater com a FK do outro modelo
+    tableName: 'EmpregoCategorias'
 });
 
 

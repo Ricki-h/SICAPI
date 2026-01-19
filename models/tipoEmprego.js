@@ -10,6 +10,10 @@ const TipoEmprego = sequelize.define('TipoEmprego', {
     Nome: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    Icone: {
+        type: DataTypes.STRING(2000),
+        allowNull: false
     }
     
 
