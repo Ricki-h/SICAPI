@@ -28,8 +28,8 @@ const UsuarioCadArca = require('./UsuarioCadArca');
 const UsuarioAdm = require('./UsuarioAdm');
 const PostBlog = require('./Post_blog');
 
-UsuarioAdm.hasMany(PostBlog, { foreignKey: 'ID_Admin' });
-PostBlog.belongsTo(UsuarioAdm, { foreignKey: 'ID_Admin' });
+UsuarioAdm.hasMany(PostBlog, { foreignKey: 'ID_Admin', as: 'postcriados'  });
+PostBlog.belongsTo(UsuarioAdm, { foreignKey: 'ID_Admin', as: 'autor' });
 
 Usuario.hasOne(UsuarioComum, { foreignKey: 'id', onDelete: 'CASCADE' });
 UsuarioComum.belongsTo(Usuario, { foreignKey: 'id' });

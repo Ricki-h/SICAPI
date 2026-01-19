@@ -36,4 +36,5 @@ app.use('/blog', require('./routes/Post_blogRoutes'))
 sequelize.sync({ force: true }) 
 
 
-module.exports = app;
+module.exports = app; 
+

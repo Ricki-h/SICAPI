@@ -14,13 +14,18 @@ const PostBlog = sequelize.define('PostBlog', {
         defaultValue: DataTypes.NOW
     },
     ID_Admin: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: { model: UsuarioAdm , key: 'id' } 
+        type: DataTypes.INTEGER
+
+        
+    },
+    Titulo: {
+        type: DataTypes.TEXT,
+        allowNull: false
     },
     Imagens: {
         type: DataTypes.STRING, 
-        allowNull: true
+        allowNull: true,
+        
     },
     Descricao: {
         type: DataTypes.TEXT,
@@ -28,6 +33,7 @@ const PostBlog = sequelize.define('PostBlog', {
     },
     Tag: {
         type: DataTypes.STRING,
+        defaultValue: "post",
         allowNull: true
     }
 }, {

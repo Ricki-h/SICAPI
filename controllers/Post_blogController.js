@@ -41,11 +41,11 @@ module.exports = {
     
     async criar(req, res) {
         try {
-            const { ...dados } = req.body;
+            const {  Titulo, Imagens, Descricao } = req.body;
             
             
             const novoPost = await PostBlog.create({
-                ...dados
+                Titulo, Imagens, Descricao, user_id: req.user.id
             });
             
             res.status(201).json(novoPost);
