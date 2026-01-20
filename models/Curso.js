@@ -40,10 +40,15 @@ const Curso = sequelize.define('Curso', {
     area: {
         type: DataTypes.STRING(50),
         allowNull: false
+    },
+    icon: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    foto: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
-
-    // foto: {...},
-    // icon: {...}
     }
 );
 

@@ -21,7 +21,9 @@ module.exports = {
         try {
             const { ...dados } = req.body;
             const novoCurso = await Curso.create({
-                ...dados
+                ...dados,
+                icon: req.files.icon ? req.files.icon[0].path : null,
+                foto: req.files.foto ? req.files.foto[0].path : null
             });
 
             res.json(novoCurso);
@@ -47,8 +49,29 @@ module.exports = {
 
         await curso.destroy();
         res.json({ mensagem: "Curso removido" });
+    },
+    async updateFiles(req, res) {
+        try {
+            const { id } = req.params;
+
+            const curso = await Curso.findByPk(id);
+            if (!curso) return res.status(404).json({ erro: "Curso não encontrado" });
+
+            if (req.files.icon) {
+                curso.icon = req.files.icon[0].path;
+            }
+
+            if (req.files.foto) {
+                curso.foto = req.files.foto[0].path;
+            }
+
+            await curso.save();
+
+            res.json(curso);
+        }
+        catch (error) {
+            res.status(500).json({ erro: error.message });
+        }
     }
-    
-    // UPDATE ICON E UPDATE FOTO
 
 };
