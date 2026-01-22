@@ -103,6 +103,110 @@ AgendamentoServico.belongsTo(Usuario, {
 })
 
 
+// ----------------------------------------------------------------------
+
+
+// Denúncia
+const Denuncia = require('./Denuncia');
+Usuario.hasMany(Denuncia, { 
+    foreignKey: 'user_id', as: 'denunciasCriadas', onDelete: 'CASCADE' 
+});
+Denuncia.belongsTo(Usuario, { 
+    foreignKey: 'user_id', as: 'autor' 
+});
+
+UsuarioAdm.hasMany(Denuncia, { 
+    foreignKey: 'admin_id', as: 'denunciasGerenciadas', onDelete: 'CASCADE' 
+});
+Denuncia.belongsTo(UsuarioAdm, { 
+    foreignKey: 'admin_id', as: 'adminResponsavel' 
+});
+
+
+// ----------------------------------------------------------------------
+
+
+// ONGs
+const Ong = require('./Ong')
+const Abrigo = require('./Abrigo');
+Ong.hasMany(Abrigo, {
+    foreignKey: 'ongId',
+    as: 'abrigosGerenciados',
+    onDelete: 'CASCADE'
+});
+
+Abrigo.belongsTo(Ong, {
+    foreignKey: 'ongId',
+    as: 'ongResponsavel'
+});
+
+
+// ----------------------------------------------------------------------
+
+
+// Curso e professor
+const Professor = require('./Professor');
+const Curso = require('./Curso');
+const UsuarioCurso = require('./UsuarioCurso');
+Curso.hasMany(Professor, {
+    foreignKey: 'cursoId'
+});
+
+Professor.belongsTo(Curso, {
+    foreignKey: 'cursoId'
+});
+Usuario.belongsToMany(Curso, {
+    through: UsuarioCurso,
+    foreignKey: 'usuario_id'
+});
+
+Curso.belongsToMany(Usuario, {
+    through: UsuarioCurso, 
+    foreignKey: 'curso_id'
+});
+
+Curso.hasMany(UsuarioCurso, {
+    foreignKey: 'curso_id'
+});
+
+UsuarioCurso.belongsTo(Curso, {
+    foreignKey: 'curso_id'
+});
+
+
+// ----------------------------------------------------------------------
+
+
+// Oportunidades de emprego
+const EmpregoOportunidade = require('./EmpregoOportunidade');
+const tipoEmprego = require('./tipoEmprego');
+const EmpreegoCategoria = require('./EmpregoCategoria');
+const InscricaoEmprego = require('./EmpregoInscricao'); 
+tipoEmprego.hasMany(EmpregoOportunidade, {
+    foreignKey: 'Tipoid'
+});
+
+EmpreegoCategoria.hasMany(EmpregoOportunidade, {
+    foreignKey: 'Categoriaid'
+});
+
+EmpregoOportunidade.belongsTo(tipoEmprego, {
+    foreignKey: 'Tipoid'
+});
+
+EmpregoOportunidade.belongsTo(EmpreegoCategoria, {
+    foreignKey: 'Categoriaid'
+});
+
+
+// ----------------------------------------------------------------------
+
+
+// Post-blog
+const PostBlog = require('./Post_blog');
+UsuarioAdm.hasMany(PostBlog, { foreignKey: 'ID_Admin', as: 'postcriados'  });
+PostBlog.belongsTo(UsuarioAdm, { foreignKey: 'ID_Admin', as: 'autor' });
+
 module.exports = {
     Usuario,
     UsuarioComum,
@@ -112,5 +216,16 @@ module.exports = {
     SolicitacaoAuxilio,
     Servico,
     CategoriaServico,
-    AgendamentoServico
+    AgendamentoServico,
+    Denuncia,
+    Ong,
+    Abrigo,
+    Professor,
+    Curso,
+    UsuarioCurso,
+    EmpreegoCategoria, 
+    EmpregoOportunidade,
+    tipoEmprego,
+    InscricaoEmprego,
+    PostBlog
 };
