@@ -1,4 +1,4 @@
-const { DataTypes, DATE } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
 const Denuncia = sequelize.define('Denuncia', {
@@ -13,7 +13,7 @@ const Denuncia = sequelize.define('Denuncia', {
     },
     data: {
         type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW
+        allowNull: false
     },
     local: {
         type: DataTypes.STRING,
@@ -31,7 +31,9 @@ const Denuncia = sequelize.define('Denuncia', {
         type: DataTypes.STRING(80),
         allowNull: false
     },
-    // fotos: {...}
+    fotos: {
+        type: DataTypes.JSON
+    },
     user_id: {
         type: DataTypes.INTEGER,
         allowNull: false

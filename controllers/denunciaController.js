@@ -31,7 +31,9 @@ module.exports = {
 
             const admAleatorio = admsNvl2[Math.floor(Math.random() * admsNvl2.length)];
             
-            const { titulo, local, descricao, tipo } = req.body;
+            const { titulo, local, descricao, tipo, data } = req.body;
+            const fotos = req.files ? req.files.map(file => file.path) : [];
+
             const novaDenuncia = await Denuncia.create({
                 titulo,
                 local,
@@ -39,7 +41,9 @@ module.exports = {
                 tipo,
                 status: 'Pendente',
                 user_id: req.user.id,
-                admin_id: admAleatorio.id
+                admin_id: admAleatorio.id,
+                fotos, 
+                data
             });
             res.json(novaDenuncia);
         } catch(error) {
