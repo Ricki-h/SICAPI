@@ -61,10 +61,15 @@ module.exports = {
         try {
             const { senha, tipo, cpf, cadarca, nivel, ...dados } = req.body;
 
-            // segurança
             const tiposValidos = ["comum", "cadArca", "adm"];
             if(!tiposValidos.includes(tipo)) {
                 return res.status(400).json({ erro: "Tipo inválido" });
+            }
+
+            if (tipo === "adm") {
+                if (!req.user || req.user.tipo !== "adm" || req.user.nivel < 5) {
+                    return res.status(403).json({ erro: "Apenas administradores nível 5 podem criar outros administradores." });
+                }
             }
 
             const senhaHash = await bcrypt.hash(senha, 10);

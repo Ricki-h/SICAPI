@@ -2,8 +2,19 @@ const express = require('express');
 const app = express();
 const sequelize = require('./config/database');
 const multer = require('multer');
+const cors = require('cors');
 
 require('./models/associations');
+
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://sicar.com',
+    '192.168.0.23:5173'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

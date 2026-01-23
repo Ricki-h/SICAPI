@@ -4,13 +4,15 @@ const controller = require('../controllers/usuarioController');
 const auth = require('../middlewares/auth');
 const upload = require('../middlewares/upload');
 const { isAdmin } = require('../middlewares/permissions')
-const { nivelMinimo } = require('../middlewares/permissions')
+const { nivelMinimo } = require('../middlewares/permissions');
+const authOptional = require('../middlewares/authOptional');
+const verificarApiKey = require('../middlewares/verificarApiKey');
 
 router.get('/all', controller.listar);
 router.get('/me', auth, controller.me)
 router.get('/:id', controller.listarUm);
 
-router.post('/create', controller.criar);
+router.post('/create', verificarApiKey, authOptional, controller.criar);
 router.post('/login/comum', controller.loginComum);
 router.post('/login/cadarca', controller.loginCadArca);
 router.post('/login/admin', controller.loginAdm);
