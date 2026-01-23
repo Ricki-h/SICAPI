@@ -1,33 +1,118 @@
-const Usuario = require('../models/Usuario');
+const { Usuario } = require('../models/associations');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { UsuarioComum } = require('../models/associations');
+const { UsuarioCadArca } = require('../models/associations');
+const { UsuarioAdm } = require('../models/associations');
+require('dotenv').config();
 
-const JWT_SECRET = 'xghosts-goats';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 module.exports = {
     async listar(req, res) {
-        const usuarios = await Usuario.findAll();
-        res.json(usuarios);
+        try {
+            const usuarios = await Usuario.findAll({
+                include: [
+                    { model: UsuarioComum },
+                    { model: UsuarioCadArca },
+                    { model: UsuarioAdm }
+                ]
+            });
+            res.json(usuarios);
+        }
+        catch(error) {
+            res.status(500).json({ erro: error.message })
+        }
     },
     async listarUm(req, res) {
-        const { id } = req.params;
-        const usuario = await Usuario.findByPk(id);
-        if(!usuario) return res.status(404).json({ erro: 'Usuário não encontrado' });
-        res.json(usuario);
+        try{
+            const { id } = req.params;
+            const usuario = await Usuario.findByPk(id, {
+                include: [
+                    { model: UsuarioComum },
+                    { model: UsuarioCadArca },
+                    { model: UsuarioAdm }
+                ]
+            });
+            if(!usuario) return res.status(404).json({ erro: 'Usuário não encontrado' });
+            res.json(usuario);
+        }
+        catch(error) {
+            res.status(500).json({ erro: error.message })
+        }
     },
     async me(req, res) {
-        const usuario = await Usuario.findByPk(req.user.id);
-        res.json(usuario);
+        try {
+            const usuario = await Usuario.findByPk(req.user.id, {
+                include: [
+                    { model: UsuarioComum },
+                    { model: UsuarioCadArca },
+                    { model: UsuarioAdm }
+                ]
+            });
+
+            res.json(usuario);
+        }
+        catch(error) {
+            res.status(500).json({ erro: error.message })
+        }
     },
     async criar(req, res) {
         try {
-            const { senha, ...dados } = req.body;
+            const { senha, tipo, cpf, cadarca, nivel, ...dados } = req.body;
+
+            const tiposValidos = ["comum", "cadArca", "adm"];
+            if(!tiposValidos.includes(tipo)) {
+                return res.status(400).json({ erro: "Tipo inválido" });
+            }
+
+            if (tipo === "adm") {
+                if (!req.user || req.user.tipo !== "adm" || req.user.nivel < 5) {
+                    return res.status(403).json({ erro: "Apenas administradores nível 5 podem criar outros administradores." });
+                }
+            }
+
             const senhaHash = await bcrypt.hash(senha, 10);
+
+            if(req.body.tipo == 'cadArca' && !req.body.cadarca) {
+                return res.status(400).json({ erro: "CadArca necessário" });
+            }
+            if(req.body.tipo != 'cadArca' && !req.body.cpf) {
+                return res.status(400).json({ erro: "CPF necessário" });
+            }
 
             const novoUsuario = await Usuario.create({
                 ...dados,
+                tipo,
                 senha: senhaHash
             });
+
+            // cria entidade específica
+            if(tipo === "comum") {
+                const exist = await UsuarioComum.findOne({ where: { id: novoUsuario.id } })
+                if (exist) return res.status(400).json({ erro: 'Usuario já é comum' })
+                await UsuarioComum.create({
+                    id: novoUsuario.id,
+                    cpf
+                });
+            }
+            else if(tipo === "cadArca") {
+                const exist = await UsuarioCadArca.findOne({ where: { id: novoUsuario.id } })
+                if (exist) return res.status(400).json({ erro: 'Usuario já é cadArca' })
+                await UsuarioCadArca.create({
+                    id: novoUsuario.id,
+                    cadarca
+                });
+            }
+            else if(tipo === "adm") {
+                const exist = await UsuarioAdm.findOne({ where: { id: novoUsuario.id } })
+                if (exist) return res.status(400).json({ erro: 'Usuario já é Adm' })
+                await UsuarioAdm.create({
+                    id: novoUsuario.id,
+                    cpf,
+                    nivel
+                });
+            }
 
             res.json(novoUsuario);
         }
@@ -56,7 +141,9 @@ module.exports = {
                 dados.senha = await bcrypt.hash(dados.senha, 10)
             };
             
+            delete dados.tipo;
             await usuario.update(dados);
+
             res.json(usuario);
         }
         catch(error) {
@@ -70,10 +157,15 @@ module.exports = {
         await usuario.destroy();
         res.json({ mensagem: "Usuário removido" });
     },
+    async deletarOutro(req, res) {
+        const { id } = req.params
+        const usuario = await Usuario.findByPk(id);
+        if (!usuario) return res.status(404).json({ erro: "Usuário não encontrado" });
+
+        await usuario.destroy();
+        res.json({ mensagem: "Usuário removido" });
+    },
     async updateIcon(req, res) {
-        console.log("Chegou no updateIcon!");
-        console.log("File recebido:", req.file);
-        console.log("Body:", req.body);
         try {
             const usuario = await Usuario.findByPk(req.user.id);
             if (!usuario) return res.status(404).json({ erro: "Usuário não encontrado" });
@@ -87,22 +179,82 @@ module.exports = {
         }
     },
 
-
-    async login(req, res) {
+    async loginComum(req, res) {
         const { cpf, senha } = req.body;
 
-        const usuario = await Usuario.findOne({ where: { cpf } });
-        if (!usuario) return res.status(404).json({ erro: "CPF não encontrado" });
+        const usuario = await UsuarioComum.findOne({ where: { cpf: cpf } });
+        if(!usuario) {
+            return res.status(404).json({ erro: 'CPF não encontrado' })
+        };
 
-        const senhaValida = await bcrypt.compare(senha, usuario.senha);
-        if(!senhaValida) return res.status(401).json({ erro: 'Senha incorreta' });
+        const usuarioP = await Usuario.findByPk(usuario.id)
+        if(!usuarioP) {
+            return res.status(404).json({ erro: 'Usuário principal não encontrado' })
+        }
+
+        const senhaValida = await bcrypt.compare(senha, usuarioP.senha);
+        if(!senhaValida) {
+            return res.status(401).json({ erro: 'Senha incorreta' });
+        };
 
         const token = jwt.sign(
-            { id: usuario.id, cpf: usuario.cpf },
+            { id: usuario.id, tipo: 'comum' },
             JWT_SECRET,
             { expiresIn: '1h' }
         );
 
-        res.json({ messagem: 'Login OK ', token })
+        res.json({ msg: 'Login Ok', token })
+    },
+    async loginCadArca(req, res) {
+        const { cadarca, senha } = req.body;
+
+        const usuario = await UsuarioCadArca.findOne({ where: { cadarca: cadarca } });
+        if(!usuario) {
+            return res.status(404).json({ erro: 'CadArca não encontrado' })
+        };
+
+        const usuarioP = await Usuario.findByPk(usuario.id)
+        if(!usuarioP) {
+            return res.status(404).json({ erro: 'Usuário principal não encontrado' })
+        }
+
+        const senhaValida = await bcrypt.compare(senha, usuarioP.senha);
+        if(!senhaValida) {
+            return res.status(401).json({ erro: 'Senha incorreta' });
+        };
+
+        const token = jwt.sign(
+            { id: usuario.id, tipo: 'cadArca' },
+            JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        res.json({ msg: 'Login Ok', token })
+    },
+    async loginAdm(req, res) {
+        const { cpf, senha } = req.body;
+
+        const admin = await UsuarioAdm.findOne({ where: { cpf: cpf } });
+        if(!admin) {
+            return res.status(404).json({ erro: 'CPF não encontrado' })
+        };
+        
+        const usuario = await Usuario.findByPk(admin.id)
+        if(!usuario) {
+            return res.status(404).json({ erro: 'Usuário principal não encontrado' })
+        }
+
+        const senhaValida = await bcrypt.compare(senha, usuario.senha);
+        if(!senhaValida) {
+            return res.status(401).json({ erro: 'Senha incorreta' });
+        };
+
+        const token = jwt.sign(
+            { id: admin.id, tipo: 'adm', nivel: admin.nivel },
+            JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        res.json({ msg: 'Login Ok', token })
     }
 };

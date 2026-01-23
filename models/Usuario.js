@@ -11,11 +11,6 @@ const Usuario = sequelize.define('Usuario', {
         autoIncrement: true,
         primaryKey: true
     },
-    cpf: {
-        type: DataTypes.STRING(11),
-        allowNull: false,
-        unique: true
-    },
     email: {
         type: DataTypes.STRING(100),
         unique: true
@@ -29,16 +24,13 @@ const Usuario = sequelize.define('Usuario', {
         allowNull: false
     },
      uf_estado: {
-        type: DataTypes.STRING(2),
-        allowNull: false,
+        type: DataTypes.STRING(2)
     },
     cidade: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
+        type: DataTypes.STRING(100)
     },
     rua: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
+        type: DataTypes.STRING(100)
     },
     telefone: {
         type: DataTypes.STRING(15),
@@ -47,6 +39,10 @@ const Usuario = sequelize.define('Usuario', {
     icon: {
         type: DataTypes.STRING(2000),
         defaultValue: 'https://res.cloudinary.com/dx8qry3lr/image/upload/v1768334682/user-default-icon_vdyyeo.png'
+    },
+    tipo: {
+        type: DataTypes.ENUM('comum', 'cadArca', 'adm'),
+        allowNull: false
     }
 });
 

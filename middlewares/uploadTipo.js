@@ -1,11 +1,12 @@
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('../config/cloudinary');
+const { param } = require('../app');
 
 const storage = new CloudinaryStorage({
     cloudinary,
     params: {
-        folder: "usuarios_icons",
+        folder: "tipos_icons",
         allowed_formats: ["jpg", "png", "jpeg", "webp"],
     }
 });

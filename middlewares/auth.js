@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'xghosts-goats';
+require('dotenv').config();
+
+const JWT_SECRET = process.env.JWT_SECRET;
 
 module.exports = function(req, res, next) {
-    console.log("TOKEN:", req.headers.authorization);
-    console.log("USER:", req.user);
     const authHeader = req.headers.authorization;
     
     if (!authHeader)

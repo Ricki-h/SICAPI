@@ -5,7 +5,7 @@ const cloudinary = require('../config/cloudinary');
 const storage = new CloudinaryStorage({
     cloudinary,
     params: {
-        folder: "usuarios_icons",
+        folder: "cursos",
         allowed_formats: ["jpg", "png", "jpeg", "webp"],
     }
 });
@@ -20,4 +20,9 @@ const upload = multer({
   }
 });
 
-module.exports = upload;
+module.exports = {
+  uploadMutiple: upload.fields([
+    { name: 'icon', maxCount: 1 },
+    { name: 'foto', maxCount: 1 }
+  ])
+};
