@@ -10,7 +10,8 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'https://sicar.com',
-    '192.168.0.23:5173'
+    '192.168.0.23:5173',
+    'http://localhost:5173'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
