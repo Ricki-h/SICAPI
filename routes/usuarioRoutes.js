@@ -8,9 +8,9 @@ const { nivelMinimo } = require('../middlewares/permissions');
 const authOptional = require('../middlewares/authOptional');
 const verificarApiKey = require('../middlewares/verificarApiKey');
 
-router.get('/all', controller.listar);
+router.get('/all', auth, isAdmin, nivelMinimo(4), controller.listar);
 router.get('/me', auth, controller.me)
-router.get('/:id', controller.listarUm);
+router.get('/:id', auth, isAdmin, nivelMinimo(4), controller.listarUm);
 
 router.post('/create', verificarApiKey, authOptional, controller.criar);
 router.post('/login/comum', controller.loginComum);
