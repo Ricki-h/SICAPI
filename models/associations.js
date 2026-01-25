@@ -178,23 +178,23 @@ UsuarioCurso.belongsTo(Curso, {
 
 
 // Oportunidades de emprego
+const TipoEmprego = require('./TipoEmprego');
+const EmpregoCategoria = require('./EmpregoCategoria');
 const EmpregoOportunidade = require('./EmpregoOportunidade');
-const tipoEmprego = require('./tipoEmprego');
-const EmpreegoCategoria = require('./EmpregoCategoria');
 const InscricaoEmprego = require('./EmpregoInscricao'); 
-tipoEmprego.hasMany(EmpregoOportunidade, {
+TipoEmprego.hasMany(EmpregoOportunidade, {
     foreignKey: 'Tipoid'
 });
 
-EmpreegoCategoria.hasMany(EmpregoOportunidade, {
+EmpregoCategoria.hasMany(EmpregoOportunidade, {
     foreignKey: 'Categoriaid'
 });
 
-EmpregoOportunidade.belongsTo(tipoEmprego, {
+EmpregoOportunidade.belongsTo(TipoEmprego, {
     foreignKey: 'Tipoid'
 });
 
-EmpregoOportunidade.belongsTo(EmpreegoCategoria, {
+EmpregoOportunidade.belongsTo(EmpregoCategoria, {
     foreignKey: 'Categoriaid'
 });
 
@@ -223,9 +223,9 @@ module.exports = {
     Professor,
     Curso,
     UsuarioCurso,
-    EmpreegoCategoria, 
+    EmpregoCategoria, 
     EmpregoOportunidade,
-    tipoEmprego,
+    TipoEmprego,
     InscricaoEmprego,
     PostBlog
 };

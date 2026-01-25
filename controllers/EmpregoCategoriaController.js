@@ -1,4 +1,4 @@
-const EmpregoCategoria = require('../models/EmpregoCategoria');
+const { EmpregoCategoria } = require('../models/associations');
 
 module.exports = {
     async listar(req, res) {

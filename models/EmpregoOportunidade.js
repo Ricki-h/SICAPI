@@ -46,7 +46,7 @@ const EmpregoOportunidade = sequelize.define('EmpregoOportunidade', {
     Tipoid: { 
         type: DataTypes.INTEGER, 
         allowNull: true,
-        references: { model: 'tipoEmpregos', key: 'ID' }
+        references: { model: 'TipoEmpregos', key: 'ID' }
     },
     Salario: {
         type: DataTypes.DECIMAL(10, 2),

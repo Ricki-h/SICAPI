@@ -1,8 +1,11 @@
-const EmpregoOportunidade = require('../models/EmpregoOportunidade.js');
+const { EmpregoOportunidade, TipoEmprego, EmpregoCategoria } = require('../models/associations');
 
 module.exports = {
     async listar(req, res) {
-        const oportunidades = await EmpregoOportunidade.findAll();
+        const oportunidades = await EmpregoOportunidade.findAll({ include: [
+            { model: TipoEmprego },
+            { model: EmpregoCategoria }
+        ] });
         res.json(oportunidades)
     },
      async listarUm(req, res) {
