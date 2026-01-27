@@ -11,7 +11,8 @@ app.use(cors({
     'http://localhost:3000',
     'https://sicar.com',
     '192.168.0.23:5173',
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'https://musical-doodle-pj7gv9pgx46v3g49-5173.app.github.dev'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']
