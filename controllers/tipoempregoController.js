@@ -15,8 +15,7 @@ module.exports = {
         try {
             const {...dados} = req.body;
             const novoTipo = await TipoEmprego.create({
-                ...dados,
-                Icone: req.file.path
+                ...dados
             });
             res.json(novoTipo);
         } catch(error) {
@@ -29,7 +28,7 @@ module.exports = {
             const tipo = await TipoEmprego.findByPk(req.params.id);
             if(!tipo) return res.status(404).json({ erro: 'tipo não encontrado' });
 
-            await curso.update(req.body);
+            await tipo.update(req.body);
             res.json(tipo);
 
         } catch(error) {

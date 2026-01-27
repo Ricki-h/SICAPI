@@ -10,7 +10,10 @@ module.exports = {
     },
      async listarUm(req, res) {
         const { id } = req.params;
-        const oportunidade = await EmpregoOportunidade.findByPk(id);
+        const oportunidade = await EmpregoOportunidade.findByPk(id, { include: [
+            { model: TipoEmprego },
+            { model: EmpregoCategoria }
+        ] });
         if(!oportunidade) return res.status(404).json({ erro: 'oportunidade não encontrado' });
         res.json(oportunidade);
     },
@@ -40,10 +43,10 @@ module.exports = {
         }
     },
     async deletar(req, res) {
-        const tipo = await EmpregoOportunidade.findByPk(req.params.id);
-        if (!tipo) return res.status(404).json({ erro: "tipo não encontrado" });
+        const oportunidade = await EmpregoOportunidade.findByPk(req.params.id);
+        if (!oportunidade) return res.status(404).json({ erro: "oportunidade não encontrado" });
 
-        await curso.destroy();
+        await oportunidade.destroy();
         res.json({ mensagem: "tipo removido" });
     },
     async atualizar_icon(req, res) {

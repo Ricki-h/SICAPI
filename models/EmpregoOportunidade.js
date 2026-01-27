@@ -59,7 +59,7 @@ const EmpregoOportunidade = sequelize.define('EmpregoOportunidade', {
     },
     Data: {
         type: DataTypes.DATEONLY,
-        allowNull: false
+        defaultValue: DataTypes.NOW
     },
     Carga_Horaria: {
         type: DataTypes.INTEGER,

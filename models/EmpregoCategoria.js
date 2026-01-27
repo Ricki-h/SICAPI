@@ -12,7 +12,7 @@ const EmpregoCategoria = sequelize.define('EmpregoCategoria', {
         allowNull: false
     }, 
     Icone: {
-        type: DataTypes.STRING(2000),
+        type: DataTypes.STRING(3000),
         allowNull: false
 
     }
