@@ -29,7 +29,7 @@ const Curso = sequelize.define('Curso', {
     carga_horaria: {
         type: DataTypes.STRING(20),
         allowNull: false
-    },
+    }, 
     duracao: {
         type: DataTypes.STRING(20),
         allowNull: false
