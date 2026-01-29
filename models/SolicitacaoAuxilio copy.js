@@ -14,6 +14,10 @@ const SolicitacaoAuxilio = sequelize.define('SolicitacaoAuxilio', {
     data: {
         type: DataTypes.DATEONLY,
         defaultValue: DataTypes.NOW
+    },
+    auxilio_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 });
 
