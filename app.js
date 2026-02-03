@@ -9,7 +9,7 @@ require('./models/associations');
 app.use(cors({
   origin: [
     'https://sicar.onrender.com',
-    'http://localhost:3000'
+    'http://localhost:5173'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']
